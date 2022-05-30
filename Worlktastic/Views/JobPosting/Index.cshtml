@@ -5,8 +5,9 @@
 }
 
 <a class="btn btn-primary" asp-controller="JobPosting" asp-action="CreateEdtitJobPosting">Neues Inserat anlegen</a>
+<hr />
 
-<table class="table table-bordered table-striped table-hover">
+<table id="JobPostingTable" class="table table-bordered table-striped table-hover">
     <thead class="table-dark" style="text-align:center">
         <tr>
             <th>Job Title</th>
@@ -20,16 +21,55 @@
         @{
             foreach (JobPosting jobPosting in Model)
             {
-                <tr>
-                    <td>@jobPosting.JobTitle</td>
-                    <td>@jobPosting.JobLoction</td>
-                    <td>@jobPosting.CompanyName</td>
-                    <td class="col-2">
-                        <a class="btn btn-warning" asp-route-id="@jobPosting.Id" asp-controller="JobPosting" asp-action="CreateEdtitJobPosting">Edit</a>
-                        <a class="btn btn-danger" style="float:right">Löschen</a>
-                    </td>
-                </tr>
+                                <tr>
+                                    <td>@jobPosting.JobTitle</td>
+                                    <td>@jobPosting.JobLoction</td>
+                                    <td>@jobPosting.CompanyName</td>
+                                    <td class="col-2">
+                                    <a class="btn btn-warning" asp-route-id="@jobPosting.Id" asp-controller="JobPosting" asp-action="CreateEdtitJobPosting">Edit</a>
+                                    <button class="btn btn-danger" style="float:right" onclick="onClickedDeleteButton(@jobPosting.Id)">Löschen</button>
+                                </td>
+                            </tr>
             }
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+            $(document).ready( function () {
+        $('#JobPostingTable').DataTable();
+        });
+
+        function onClickedDeleteButton(id) {
+            
+        Swal.fire({
+          title: 'Bist du dir sicher, das du dies Löschen willst?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ja, Ich bin mir sicher!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+              //Backend call to delelte job posting by id 
+              $.ajax({
+                 type: "POST",
+                 url: "@Url.Action("DeleteJobPostingById")",
+                 data: {id: id},
+                  success: function(msg) {
+                      Swal.fire('Gelöscht!', 'Der Eintrag wurde gelöscht.', 'Erfolgreich').then((result) => {
+                          location.reload();                          
+                      });
+                  },
+                  error: function(msg) {
+                      Swal.fire('Upps, irgendwas lief schief!', '', 'error' )
+                  }
+              });            
+          }
+        })
+        }
+
+    </script>
+}
