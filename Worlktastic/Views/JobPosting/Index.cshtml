@@ -21,15 +21,15 @@
         @{
             foreach (JobPosting jobPosting in Model)
             {
-                                <tr>
-                                    <td>@jobPosting.JobTitle</td>
-                                    <td>@jobPosting.JobLoction</td>
-                                    <td>@jobPosting.CompanyName</td>
-                                    <td class="col-2">
-                                    <a class="btn btn-warning" asp-route-id="@jobPosting.Id" asp-controller="JobPosting" asp-action="CreateEdtitJobPosting">Edit</a>
-                                    <button class="btn btn-danger" style="float:right" onclick="onClickedDeleteButton(@jobPosting.Id)">Löschen</button>
-                                </td>
-                            </tr>
+            <tr>
+                <td>@jobPosting.JobTitle</td>
+                <td>@jobPosting.JobLoction</td>
+                <td>@jobPosting.CompanyName</td>
+                <td class="col-2">
+                <a class="btn btn-warning" asp-route-id="@jobPosting.Id" asp-controller="JobPosting" asp-action="CreateEdtitJobPosting">Edit</a>
+                <button class="btn btn-danger" style="float:right" onclick="onClickedDeleteButton(@jobPosting.Id)">Löschen</button>
+            </td>
+        </tr>
             }
         }
     </tbody>
