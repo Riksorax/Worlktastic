@@ -34,14 +34,14 @@
     @{
         foreach (JobPosting jobPosting in Model)
         {
-                                        <a href="#" onclick="showModal(@jobPosting.Id);" data-bs-toggle="modal" data-bs-target="#modalJobPosting" class="list-group-item list-group-item-action" aria-                                  current="true">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">@jobPosting.JobTitle</h5>
-                                            <small>@jobPosting.JobLoction</small>
-                                        </div>
-                                        <p class="mb-1">@jobPosting.CompanyName</p>
-                                        <small>@jobPosting.StartDate.ToShortDateString()</small>
-                                        </a>
+        <a href="#" onclick="showModal(@jobPosting.Id);" data-bs-toggle="modal" data-bs-target="#modalJobPosting"                                                                       class="list-group-item list-group-item-action" aria-                                  current="true">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">@jobPosting.JobTitle</h5>
+            <small>@jobPosting.JobLoction</small>
+        </div>
+        <p class="mb-1">@jobPosting.CompanyName</p>
+        <small>@jobPosting.StartDate.ToShortDateString()</small>
+        </a>
         }
     }
   
@@ -56,8 +56,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+          <img id="modalImage" class="img-fluid" src=""/>
+
         <div>
             <p id="modalDescription"></p>
+        </div>
+        <hr />
+        <div id="modalcontact">
         </div>
       </div>
       <div class="modal-footer">
@@ -72,25 +77,31 @@
     <script>
         function showModal(id) {
 
+
             //Backend call to delelte job posting by id 
               $.ajax({
                  type: "GET",
                  url: "@Url.Action("GetJobPosting")",
                  data: {id: id},
                   success: function(data) {
-
+                      
+                      $('#modalImage').attr('src', `data:image/png;base64,${data.companyImage}`);
+                      //Einmal als js und als jquarry
+                      //document.getElementById("modalImage").src = "data:image/png;base64," + data.companyImage;
                       document.getElementById('modalTitle').innerHTML = data.jobTitle;
                       document.getElementById('modalDescription').innerHTML = data.description;
+                      document.getElementById('modalcontact').textContent = data.contactMail;
 
-                      var myModal = new bootstrap.Modal(document.getElementById('modalJobPosting'), options)
+                      var myModal = new bootstrap.Modal(document.getElementById('modalJobPosting'), options);
                       myModal.show('modalJobPosting');
                   }
-              });        
-
+              });
     }
 
+
+
+
+
+
     </script>
-
-
-
 }
