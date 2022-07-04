@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Worlktastic.Models;
 using Worlktastic.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Worlktastic.Controllers
 {
@@ -49,6 +50,12 @@ namespace Worlktastic.Controllers
             }
 
             return Ok(jobPostingFromDb);
+        }
+
+        [Authorize(Policy = "RequireAdministratorRole")]
+        public IActionResult Shutdown()
+        {
+            return View();
         }
     }
 }

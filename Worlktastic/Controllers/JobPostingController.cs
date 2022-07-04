@@ -6,6 +6,7 @@ using Worlktastic.Models;
 namespace Worlktastic.Controllers
 {
     [Authorize]
+    [Authorize(Policy = "EmployeeOnly")]
     public class JobPostingController : Controller
     {
         private readonly ApplicationDbContext _context;
